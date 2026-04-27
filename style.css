@@ -1249,15 +1249,33 @@ ul { list-style: none; }
 
 @media (max-width: 768px) {
   .hero-mascot {
-    width: clamp(160px, 45vw, 260px);
-    opacity: .35;     /* fade on mobile so text is readable */
+    left: auto;
+    right: -4%;
+    transform: none;
+    width: clamp(140px, 38vw, 220px);
+    opacity: .5;
+    /* Push behind text layer on mobile */
+    z-index: 1;
   }
   .hero-content {
     max-width: 100%;
+    position: relative;
+    z-index: 3;
   }
 }
 
 @media (max-width: 480px) {
-  .hero-mascot { display: none; }
-  .hero-content { max-width: 100%; }
+  .hero-mascot {
+    left: auto;
+    right: -6%;
+    transform: none;
+    width: clamp(110px, 35vw, 180px);
+    opacity: .4;
+    z-index: 1;
+  }
+  .hero-content {
+    max-width: 100%;
+    position: relative;
+    z-index: 3;
+  }
 }
