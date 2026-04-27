@@ -847,9 +847,9 @@ ul { list-style: none; }
 @media (max-width: 768px) {
   .nav-links { display: none; }
 
-  .hero { height: 72vh; min-height: 440px; }
+  .hero { height: auto; min-height: 0; padding-bottom: 0; }
   .hero-title { font-size: clamp(2.4rem, 10vw, 4rem); }
-  .hero-desc { display: none; }  /* save space on tablet */
+  .hero-desc { display: none; }
 
   /* Duel: stack vertically on small screens */
   .duel-arena {
@@ -1250,32 +1250,35 @@ ul { list-style: none; }
 @media (max-width: 768px) {
   .hero-mascot {
     left: auto;
-    right: -4%;
+    right: 0;
     transform: none;
-    width: clamp(140px, 38vw, 220px);
-    opacity: .5;
-    /* Push behind text layer on mobile */
+    width: clamp(100px, 28vw, 180px);
+    opacity: .55;
     z-index: 1;
+    bottom: 80px; /* lift above buttons */
   }
   .hero-content {
     max-width: 100%;
     position: relative;
     z-index: 3;
+    padding-right: clamp(110px, 30vw, 200px); /* push text left of mascot */
   }
 }
 
 @media (max-width: 480px) {
   .hero-mascot {
     left: auto;
-    right: -6%;
+    right: 0;
     transform: none;
-    width: clamp(110px, 35vw, 180px);
-    opacity: .4;
+    width: clamp(90px, 26vw, 150px);
+    opacity: .45;
     z-index: 1;
+    bottom: 80px;
   }
   .hero-content {
     max-width: 100%;
     position: relative;
     z-index: 3;
+    padding-right: clamp(100px, 28vw, 170px);
   }
 }
