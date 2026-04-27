@@ -1209,3 +1209,55 @@ ul { list-style: none; }
 @media (max-width: 480px) {
   .onboarding-box { padding: 24px 18px 22px; }
 }
+
+/* ══════════════════════════════════════════════════════
+   HERO MASCOT
+══════════════════════════════════════════════════════ */
+.hero-mascot {
+  position: absolute;
+  /* Center in the right half of the hero */
+  left: 58%;
+  transform: translateX(-50%);
+  bottom: 0;
+  z-index: 2;
+  width: clamp(260px, 28vw, 460px);
+  pointer-events: none;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.hero-mascot-img {
+  width: 100%;
+  height: 100%;
+  max-height: 82vh;
+  object-fit: contain;
+  object-position: bottom right;
+  display: block;
+  /* Subtle fade from bottom so it sits naturally on the hero */
+  -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,1) 60%, transparent 100%);
+  mask-image: linear-gradient(180deg, rgba(0,0,0,1) 60%, transparent 100%);
+  filter: drop-shadow(0 0 40px rgba(232,124,38,.15));
+}
+
+/* Make sure hero content stays on the left */
+.hero-content {
+  position: relative;
+  z-index: 3;
+  max-width: min(580px, 55vw);
+}
+
+@media (max-width: 768px) {
+  .hero-mascot {
+    width: clamp(160px, 45vw, 260px);
+    opacity: .35;     /* fade on mobile so text is readable */
+  }
+  .hero-content {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-mascot { display: none; }
+  .hero-content { max-width: 100%; }
+}
