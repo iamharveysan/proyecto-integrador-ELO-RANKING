@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ranking ELO · Proyecto Integrador 2026 · USB Bogotá</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══ NAV ═══════════════════════════════════════════ -->
+  <nav class="nav" id="mainNav">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <img 
+          src="https://www.usbbog.edu.co/wp-content/uploads/2023/10/logo-usb-bogota-negro-2048x632.png"
+          alt="Universidad de San Buenaventura Bogotá"
+          class="nav-logo-img"
+        />
+        <span class="nav-elo-badge">elo</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#" class="active">Inicio</a></li>
+        <li><a href="#rankTop">Ranking</a></li>
+        <li><a href="#facultades">Facultades</a></li>
+      </ul>
+      <div class="nav-right">
+        <span class="nav-stat"><b id="usageCount">0</b> visitas</span>
+        <span class="nav-sep">·</span>
+        <span class="nav-stat"><b id="globalDuelCount">0</b> duelos</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══ PROJECT HEADER ════════════════════════════════════ -->
+  <div class="project-header">
+    <div class="project-header-inner">
+      <div class="project-left">
+        <span class="project-tag">Proyecto Integrador 2026</span>
+        <h2 class="project-title">Facultad de Ciencias Empresariales</h2>
+        <p class="project-courses">
+          <span>Fundamentos de Mercadeo</span>
+          <span class="project-dot">·</span>
+          <span>Estadística Básica</span>
+        </p>
+      </div>
+      <div class="project-right">
+        <span class="project-sede">Bogotá</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ HERO ════════════════════════════════════════════ -->
+  <section class="hero">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-vignette"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow" id="heroBadge">🏆 Electiva destacada</p>
+      <h1 class="hero-title" id="heroTitle">Cargando…</h1>
+      <p class="hero-sub" id="heroProgram"></p>
+      <p class="hero-desc">Vota en duelos ELO y descubre qué electiva lidera entre estudiantes.</p>
+      <div class="hero-btns">
+        <button class="hbtn hbtn-primary" id="btnOpenDuel">⚡ Iniciar duelo</button>
+        <button class="hbtn hbtn-ghost" id="btnRefresh">↺ Actualizar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FILTER BAR ══════════════════════════════════════ -->
+  <div class="fbar">
+    <div class="fbar-inner">
+      <div class="fbar-group">
+        <label class="fbar-label">Perfil</label>
+        <select id="segmentSelect" class="fbar-select"></select>
+      </div>
+      <div class="fbar-group">
+        <label class="fbar-label">Contexto</label>
+        <select id="contextSelect" class="fbar-select"></select>
+      </div>
+      <div class="fbar-group">
+        <label class="fbar-label">Facultad</label>
+        <select id="facultySelect" class="fbar-select"></select>
+      </div>
+      <div class="fbar-group fbar-search">
+        <label class="fbar-label">Buscar</label>
+        <input id="searchInput" class="fbar-input" type="text" placeholder="Ej. mercadeo, paz…" />
+      </div>
+      <button id="btnClear" class="fbar-btn">✕ Limpiar</button>
+      <span class="fbar-count"><b id="filteredCount">0</b> duelos</span>
+    </div>
+  </div>
+
+  <!-- ═══ DUEL MODAL ══════════════════════════════════════ -->
+  <div class="modal" id="duelModal" aria-modal="true" role="dialog">
+    <div class="modal-box">
+      <button class="modal-x" id="modalClose" aria-label="Cerrar">✕</button>
+      <p class="modal-kicker">⚔️ Duelo ELO</p>
+      <p class="modal-q" id="modalQuestion">—</p>
+
+      <div class="duel-arena">
+        <!-- Card A -->
+        <button class="duel-btn" id="btnA" type="button">
+          <div class="duel-poster" id="duelAContent"></div>
+          <div class="duel-choose">Elegir este ↑</div>
+        </button>
+
+        <div class="duel-vs" aria-hidden="true">VS</div>
+
+        <!-- Card B -->
+        <button class="duel-btn" id="btnB" type="button">
+          <div class="duel-poster" id="duelBContent"></div>
+          <div class="duel-choose">Elegir este ↑</div>
+        </button>
+      </div>
+
+      <div class="modal-footer">
+        <button class="modal-skip" id="btnNewPair">Saltar par →</button>
+        <span class="modal-hint">Cada voto recalcula el ranking en tiempo real</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ MAIN ════════════════════════════════════════════ -->
+  <main class="main">
+
+    <!-- Top ranking -->
+    <section class="row-wrap" id="rankTop">
+      <div class="row-head">
+        <h2 class="row-title"><span class="row-num">#</span> Top ranking</h2>
+        <p class="row-sub" id="rankingTitle"></p>
+      </div>
+      <div class="poster-rail" id="topBox"></div>
+    </section>
+
+    <!-- Faculty rows -->
+    <div id="facultyRows"></div>
+
+    <!-- Recent votes -->
+    <section class="row-wrap" id="recentSection">
+      <div class="row-head">
+        <h2 class="row-title">🕐 Últimos duelos</h2>
+      </div>
+      <div class="recent-grid" id="recentVotes"></div>
+    </section>
+
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- ═══ ONBOARDING OVERLAY (primera visita) ════════════ -->
+  <div class="onboarding" id="onboarding">
+    <div class="onboarding-box">
+      <img
+        src="https://www.usbbog.edu.co/wp-content/uploads/2023/10/logo-usb-bogota-negro-2048x632.png"
+        alt="USB Bogotá"
+        class="onboarding-logo"
+      />
+      <div class="onboarding-tag">Proyecto Integrador 2026</div>
+      <h2 class="onboarding-title">Ranking ELO de Electivas</h2>
+      <p class="onboarding-sub">
+        Facultad de Ciencias Empresariales<br/>
+        <span>Fundamentos de Mercadeo · Estadística Básica</span>
+      </p>
+      <p class="onboarding-desc">
+        Compara electivas en duelos A/B. Cada voto ajusta el ranking usando el
+        <strong>algoritmo ELO</strong> — el mismo que usan los ajedrecistas y las
+        plataformas de streaming para ordenar preferencias.
+      </p>
+      <div class="onboarding-steps">
+        <div class="ob-step">
+          <span class="ob-num">1</span>
+          <span>Elige tu <b>perfil</b> y <b>contexto</b> de decisión</span>
+        </div>
+        <div class="ob-step">
+          <span class="ob-num">2</span>
+          <span>Vota en duelos A/B entre electivas</span>
+        </div>
+        <div class="ob-step">
+          <span class="ob-num">3</span>
+          <span>El ranking se actualiza en <b>tiempo real</b></span>
+        </div>
+      </div>
+      <button class="onboarding-btn" id="btnOnboardingStart">⚡ Empezar a votar</button>
+      <p class="onboarding-skip" id="btnOnboardingSkip">Solo quiero ver el ranking →</p>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
