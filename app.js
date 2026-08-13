@@ -350,15 +350,18 @@ document.addEventListener("DOMContentLoaded", () => {
   function rebuildFromVotes(votes) {
     buckets = createEmptyBuckets();
     votes.forEach(v => {
-      // Bucket por filtro
-      const k = bucketKey(v.segmentKey, v.contextKey);
-      if (buckets[k]?.[v.optionA] && buckets[k]?.[v.optionB]) {
-        applyElo(buckets[k], v.optionA, v.optionB, v.winner);
-      }
-      // Bucket global — siempre
+      // Bucket global — todos los votos siempre van aquí
       const g = buckets["GLOBAL__GLOBAL"];
       if (g?.[v.optionA] && g?.[v.optionB]) {
         applyElo(g, v.optionA, v.optionB, v.winner);
+      }
+      // Bucket por filtro — solo si tiene segmentKey y contextKey válidos (no GLOBAL)
+      if (v.segmentKey && v.segmentKey !== "GLOBAL" &&
+          v.contextKey && v.contextKey !== "GLOBAL") {
+        const k = bucketKey(v.segmentKey, v.contextKey);
+        if (buckets[k]?.[v.optionA] && buckets[k]?.[v.optionB]) {
+          applyElo(buckets[k], v.optionA, v.optionB, v.winner);
+        }
       }
     });
   }
@@ -690,13 +693,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const winner = side === "A" ? currentA : currentB;
     const loser  = side === "A" ? currentB : currentA;
 
+    const segKey   = segmentSelect.value;
+    const ctxKey   = contextSelect.value;
+    const segLabel = segKey === "GLOBAL"
+      ? "Ranking Global"
+      : (segmentos[segKey] || segKey);
+    const ctxLabel = contextos[ctxKey] || ctxKey;
+
     const rec = {
       ts:           new Date().toISOString(),
       sessionId:    getSessionId(),
-      segmentKey:   segmentSelect.value,
-      segmentLabel: segmentos[segmentSelect.value],
-      contextKey:   contextSelect.value,
-      contextLabel: contextos[contextSelect.value],
+      segmentKey:   segKey,
+      segmentLabel: segLabel,
+      contextKey:   ctxKey,
+      contextLabel: ctxLabel,
       optionA:      currentA.nombre,
       optionB:      currentB.nombre,
       winner:       winner.nombre,
