@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ══════════════════════════════════════════════════════
   // CONFIG
   // ══════════════════════════════════════════════════════
-  const BACKEND_URL     = "https://script.google.com/macros/s/AKfycbxapJkaEfyDG7V5gVlJKxLtVXm6NjBj4jRaS_l70VDYRfjBB6X2tPvuq-IW8cjORsMG_Q/exec";
+  const BACKEND_URL     = "https://script.google.com/macros/s/AKfycbxTyoOLSwN5dqVgXxhacn2gPJg-15MhdY7_1dyPx63nriASbwM5PDs16O7UuKCGthN_yg/exec";
   const LOCAL_STATE_KEY = "usb_elo_pro_v3";
   const SESSION_KEY     = "usb_elo_session_v3";
   const VISIT_FLAG      = "usb_elo_visit_v3";
@@ -415,23 +415,35 @@ document.addEventListener("DOMContentLoaded", () => {
   // ══════════════════════════════════════════════════════
   // BACKEND
   // ══════════════════════════════════════════════════════
-  async function callBackend(p = {}) {
+  // GET — para bootstrap y visit (sin body largo)
+  async function callBackendGet(p = {}) {
     const url = new URL(BACKEND_URL);
-    Object.entries(p).forEach(([k, v]) => url.searchParams.set(k, v));
+    Object.entries(p).forEach(([k, v]) => url.searchParams.set(k, String(v)));
     url.searchParams.set("_ts", Date.now());
     const res = await fetch(url.toString());
-    if (!res.ok) throw new Error("backend error");
+    if (!res.ok) throw new Error("backend GET error " + res.status);
+    return res.json();
+  }
+
+  // POST — para votos (evita límite de URL y problemas con tildes/caracteres)
+  async function callBackendPost(data = {}) {
+    const res = await fetch(BACKEND_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error("backend POST error " + res.status);
     return res.json();
   }
 
   async function registerBackendVisitOnce() {
     if (sessionStorage.getItem(VISIT_FLAG) === "1") return;
-    await callBackend({ action: "visit", sessionId: getSessionId() });
+    await callBackendGet({ action: "visit", sessionId: getSessionId() });
     sessionStorage.setItem(VISIT_FLAG, "1");
   }
 
   async function loadBackendBootstrap() {
-    const data = await callBackend({ action: "bootstrap" });
+    const data = await callBackendGet({ action: "bootstrap" });
     serverStats = { visitas: Number(data.visitas||0), duelos: Number(data.duelos||0) };
     serverVotes = Array.isArray(data.votes) ? data.votes : [];
     rebuildFromVotes(serverVotes);
@@ -439,7 +451,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function sendVoteToBackend(r) {
-    await callBackend({ action:"vote", ...r });
+    await callBackendPost({ action: "vote", ...r });
   }
 
   // ══════════════════════════════════════════════════════
