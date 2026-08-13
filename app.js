@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ══════════════════════════════════════════════════════
   // CONFIG
   // ══════════════════════════════════════════════════════
-  const BACKEND_URL     = "https://script.google.com/macros/s/AKfycbycVj2oGhgTuhjyucPmjxm8Tp4yBIUiS9L1m9CV-2g6TnnzQXjCsv9yjllteGDHg1J7bw/exec";
+  const BACKEND_URL     = "https://script.google.com/macros/s/AKfycby-aJIs3AgS1DHEAwd6XBWsmCjN0DW3t383wggQV_ZveCRKSY7UfZQTx2Ih4WEYgd6xTg/exec";
   const LOCAL_STATE_KEY = "usb_elo_pro_v3";
   const SESSION_KEY     = "usb_elo_session_v3";
   const VISIT_FLAG      = "usb_elo_visit_v3";
